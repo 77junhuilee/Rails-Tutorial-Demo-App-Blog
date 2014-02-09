@@ -12,11 +12,16 @@ Blog::Application.routes.draw do
 
   match '/signup', to: 'users#new', via: 'get'
 
+  match '/signin', to: 'sessions#new', via: 'get'
+  match '/signout', to: 'sessions#destroy', via: 'delete'
+
   resources :microposts
 
   resources :users
 
   resources :posts
+
+  resources :sessions, only: [:new, :create, :destroy]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

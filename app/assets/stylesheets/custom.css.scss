@@ -2,6 +2,7 @@
 
 /* mixins, variables,etc. */
 $grayMediumLight: #eaeaea;
+$lightGray: #999;
 
 @mixin box_sizing{
   -moz-box-sizing: border-box;
@@ -47,7 +48,7 @@ textarea{
 
 /* typography */
 
-h1,h2,h3,h4,h5,6{
+h1,h2,h3,h4,h5,h6{
 	line-height: 1;
 }
 
@@ -64,7 +65,7 @@ h2{
 	margin-bottom: 30px;
 	text-align: center;
 	font_weight: normal;
-	color: #999;
+	color: $lightGray;
 }
 
 p{
@@ -96,8 +97,8 @@ p{
 footer {
   margin-top: 45px;
   padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #999;
+  border-top: 1px solid $grayMediumLight;
+  color: $lightGray;
 }
 
 footer a {

@@ -44,21 +44,18 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in @user
         flash[:success] = "Welcome to the Sample App!"
+        # redirect_to @user
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
+        # render "new"
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  private 
-    def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    end
-  
+  end  
 
   # PUT /users/1
   # PUT /users/1.json
