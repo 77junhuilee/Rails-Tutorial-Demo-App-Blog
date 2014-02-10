@@ -84,34 +84,41 @@ describe "AuthenticationPages" do
             end
           end
         end
-        describe "as non-admin user" do
-          let(:user) { FactoryGirl.create(:user) }
-          let(:non_admin) { FactoryGirl.create(:user) }
+      end
 
-          before { sign_in non_admin, no_capybara: true }
+      describe "as non-admin user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:non_admin) { FactoryGirl.create(:user) }
 
-          describe "submitting a DELETE request to the Users#destroy action" do
-            before { delete user_path(user) }
-            specify { expect(response).to redirect_to(root_path) }
-          end
+        before { sign_in non_admin, no_capybara: true }
+        # before do
+        #   visit signin_path
+        #   fill_in "Email", with: non_admin.email
+        #   fill_in "Password", with: non_admin.password
+        #   click_button 'Sign in'
+        # end
+
+        describe "submitting a DELETE request to the Users#destroy action" do
+          before { delete user_path(user) }
+          specify { expect(response).to redirect_to(root_path) }
         end
       end
-    end
+        
+      describe "as wrong user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+        before { sign_in user, no_capybara: true }
 
-    describe "as wrong user" do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
-      before { sign_in user, no_capybara: true }
+        describe "submitting a GET request to the Users#edit action" do
+          before { get edit_user_path(wrong_user) }
+          specify { expect(response.body).not_to match(full_title('Edit User')) }
+          specify { expect(response).to redirect_to(root_path) }
+        end
 
-      describe "submitting a GET request to the Users#edit action" do
-        before { get edit_user_path(wrong_user) }
-        specify { expect(response.body).not_to match(full_title('Edit User')) }
-        specify { expect(response).to redirect_to(root_path) }
-      end
-
-      describe "submitting a PATCH request to the Users#update action" do
-        before { put user_path(wrong_user) }
-        specify { expect(response).to redirect_to(root_path) }
+        describe "submitting a PATCH request to the Users#update action" do
+          before { put user_path(wrong_user) }
+          specify { expect(response).to redirect_to(root_path) }
+        end
       end
     end
 end
